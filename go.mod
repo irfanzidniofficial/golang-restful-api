@@ -1,4 +1,4 @@
-module golang-restfil-api
+module golang-restful-api
 
 go 1.22.4
 

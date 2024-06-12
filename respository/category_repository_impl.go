@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"golang-restfil-api/helper"
-	"golang-restfil-api/model/domain"
+	"golang-restful-api/helper"
+	"golang-restful-api/model/domain"
 )
 
 type CategoryRepositoryImpl struct {

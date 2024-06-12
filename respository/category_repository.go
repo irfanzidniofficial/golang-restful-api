@@ -3,7 +3,7 @@ package respository
 import (
 	"context"
 	"database/sql"
-	"golang-restfil-api/model/domain"
+	"golang-restful-api/model/domain"
 )
 
 type CategoryRepository interface {
