@@ -11,13 +11,22 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type CategoryServieImpl struct {
-	CategoryRepository repository.CategoryRepository
-	DB *sql.DB
-	Validate *validator.Validate
+
+
+type CategoryServiceImpl struct {
+    CategoryRepository repository.CategoryRepository
+    DB                 *sql.DB
+    Validate           *validator.Validate
 }
 
-func (service *CategoryServieImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse{
+func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sql.DB, validate *validator.Validate) CategoryService {
+    return &CategoryServiceImpl{
+        CategoryRepository: categoryRepository,
+        DB:                 DB,
+        Validate:           validate,
+    }
+}
+func (service *CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse{
 
 	err:=service.Validate.Struct(request)
 	helper.PanicIfError(err)
@@ -35,7 +44,7 @@ func (service *CategoryServieImpl) Create(ctx context.Context, request web.Categ
 	return helper.ToCategoryResponse(category)
 }
 
-func (service *CategoryServieImpl) Update(ctx context.Context, request web.CategoryUpdateRequest) web.CategoryResponse{
+func (service *CategoryServiceImpl) Update(ctx context.Context, request web.CategoryUpdateRequest) web.CategoryResponse{
 
 	err:=service.Validate.Struct(request)
 	helper.PanicIfError(err)
@@ -57,7 +66,7 @@ func (service *CategoryServieImpl) Update(ctx context.Context, request web.Categ
 
 }
 
-func (service *CategoryServieImpl) Delete(ctx context.Context, categoryId int) {
+func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
@@ -70,7 +79,7 @@ func (service *CategoryServieImpl) Delete(ctx context.Context, categoryId int) {
 
 }
 
-func (service *CategoryServieImpl) FindAll(ctx context.Context, categoryId int) web.CategoryResponse{
+func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int) web.CategoryResponse{
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 
@@ -83,7 +92,7 @@ func (service *CategoryServieImpl) FindAll(ctx context.Context, categoryId int) 
 
 }
 
-func (service *CategoryServieImpl) FindById(ctx context.Context, request web.CategoryCreateRequest) []web.CategoryResponse{
+func (service *CategoryServiceImpl) FindAll(ctx context.Context) []web.CategoryResponse{
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 

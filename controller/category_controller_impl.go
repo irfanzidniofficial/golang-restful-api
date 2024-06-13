@@ -1,15 +1,20 @@
 package controller
 
 import (
-	"encoding/json"
 	"golang-restful-api/helper"
 	"golang-restful-api/model/web"
 	"golang-restful-api/service"
 	"net/http"
 	"strconv"
-
 	"github.com/julienschmidt/httprouter"
 )
+
+func NewCategoryController(categoryService service.CategoryService) CategoryController {
+	return &CategoryControllerImpl{
+		CategoryService: categoryService,
+	}
+}
+
 
 type CategoryControllerImpl struct {
 
